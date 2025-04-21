@@ -6,11 +6,12 @@ init:
 install:
     uv pip install -e .
 
-alias build:=install
+alias build := install
 
 # run the perca cli with the provided arguments
 run:
     @echo "Unavailable, run 'just install' then 'perca [ARGS]'"
+    @echo "Alternatively use uv to run a specific python script"
 
 # run all tests
 test:
