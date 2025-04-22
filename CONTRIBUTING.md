@@ -1,37 +1,49 @@
 ### Installation
 
-This project is managed using `uv`, information on how to install it can be found [here](https://github.com/astral-sh/uv?tab=readme-ov-file#installation), and its documentation [here](https://docs.astral.sh/uv/)
+This project uses [`uv`](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) as its dependency manager. You can find its documentation [here](https://docs.astral.sh/uv/).
 
-Furthermore it is also highly recommended to install `just`, for simplifying commands, information on how to install it can be found [here](https://github.com/casey/just#installation).
+We also highly recommend installing [`just`](https://github.com/casey/just#installation), a command runner that simplifies common workflows.
 
-Assuming that is done, you should then run the following:
+Once installed, set up the project by running:
 ``` bash
 git clone https://github.com/GenoRobotics-EPFL/Perca
 cd Perca
 just init
 ```
 
-Taking a look at the project's [justfile](/justfile), shows what running `just init`does.
+The `just init` command does the following:
 ``` yaml
 init:
     uv pip install -e .
     uv run lefthook install
 ```
-It installs the package (+ as editable) and sets up the pre-commit hooks ensuring the style remains consistent.
+* Installs the project in an editable mode
+* Sets-up pre-commit hooks to enforce a consistent code style
 
-Using a `src/` and `test/` directory would not be possible without using a build system and thus having to "install" our package.
+> [!NOTE]
+> We use a `src/` and `test/` layout. This requires installing the package to avoid import issues.
+>
+> Check-out the [justfile](/justfile) or run `just --list` to view all available commands.
+
 
 ### Usage
+Perca is a CLI application. To run it:
+``` bash
+# Assuming the virtual environment is activated
+# if not, then run `source .venv/bin/activate`
+perca [ARGS]
+```
 
-Perca is a cli application, if you wish to run the cli you can either run `just build` followed by `perca [ARGS]` or less succinctly `uv run src/cli.py -- [ARGS]`.
+Alternatively, you can run it directly using uv:
+``` bash
+uv run src/cli.py [ARGS]
+```
 
-If you need to run a different python script file while testing something, run `uv run src/file.py`
+### Code Style & Best Practices
 
-### Style
+* Docstrings should follow the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
 
-For docstrings, you should adopt the [google style.](https://google.github.io/styleguide/pyguide.html)
-
-Here's a quick example
+Here's a quick exampl
 ``` py
 def check_filepath(
     filepath: str | PathLike, readable: bool = False, writeable: bool = False
@@ -52,3 +64,17 @@ def check_filepath(
 
     return filepath.is_file() and read_check and write_check
 ```
+
+* **Error Handling**: Avoid raising exceptions where possible. Use [safe-result](https://github.com/overflowy/safe-result) to return exceptions as values.
+
+* **Try to avoid excessive temp files**: Many tools we use are CLI-based. Prefer integrating their logic into our codebase if possible rather than relying on temp files and costly IO.
+
+Example using [isONclust](https://github.com/ksahlin/isONclust), which has a Python API:
+``` py
+import modules as isonclust  # Yes, the package is named `modules`
+
+# Extract and adapt only the needed logic from isONclust's CLI or script
+```
+* If temp files are necessary, use [aiofiles](https://github.com/Tinche/aiofiles) for asynchronous file operations.
+
+* For shell command integration, prefer using [asyncio.subprocess](https://docs.python.org/3/library/asyncio-subprocess.html).
