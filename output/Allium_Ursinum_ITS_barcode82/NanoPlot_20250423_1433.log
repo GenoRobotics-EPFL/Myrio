@@ -1,0 +1,22 @@
+2025-04-23 14:33:52,879 NanoPlot 1.44.1 started with arguments Namespace(threads=4, verbose=False, store=False, raw=False, huge=False, outdir='output/Allium_Ursinum_ITS_barcode82', no_static=False, prefix='', tsv_stats=False, only_report=False, info_in_report=False, maxlength=None, minlength=None, drop_outliers=False, downsample=None, loglength=False, percentqual=False, alength=False, minqual=None, runtime_until=None, readtype='1D', barcoded=False, no_supplementary=False, color='#4CB391', colormap='Greens', format=['png'], plots=['kde', 'dot'], legacy=None, listcolors=False, listcolormaps=False, no_N50=False, N50=False, title=None, font_scale=1, dpi=100, hide_stats=False, fastq=['data/expedition_jardin_botanique/Allium_Ursinum_ITS_barcode82/Allium_Ursinum_ITS_barcode82.fastq'], fasta=None, fastq_rich=None, fastq_minimal=None, summary=None, bam=None, ubam=None, cram=None, pickle=None, feather=None, path='output/Allium_Ursinum_ITS_barcode82/')
+2025-04-23 14:33:52,879 Python version is: 3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:19:24) [Clang 18.1.8 ]
+2025-04-23 14:33:54,238 Nanoget: Gathered all metrics of 4179 reads
+2025-04-23 14:33:54,247 Calculated statistics
+2025-04-23 14:33:54,247 Using sequenced read lengths for plotting.
+2025-04-23 14:33:54,249 NanoPlot:  Valid color #4CB391.
+2025-04-23 14:33:54,249 NanoPlot:  Valid colormap Greens.
+2025-04-23 14:33:54,249 NanoPlot:  Creating length plots for Read length.
+2025-04-23 14:33:54,250 NanoPlot:  Using 4179 reads maximum of 1205bp.
+2025-04-23 14:33:55,501 Saved output/Allium_Ursinum_ITS_barcode82/WeightedHistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:33:56,210 Saved output/Allium_Ursinum_ITS_barcode82/WeightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:33:56,854 Saved output/Allium_Ursinum_ITS_barcode82/Non_weightedHistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:33:57,518 Saved output/Allium_Ursinum_ITS_barcode82/Non_weightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:33:57,518 NanoPlot: Creating yield by minimal length plot for Read length.
+2025-04-23 14:33:58,520 Saved output/Allium_Ursinum_ITS_barcode82/Yield_By_Length  as png (or png for --legacy)
+2025-04-23 14:33:58,521 Created length plots
+2025-04-23 14:33:58,522 NanoPlot: Creating Read lengths vs Average read quality plots using 4179 reads.
+2025-04-23 14:33:59,261 Saved output/Allium_Ursinum_ITS_barcode82/LengthvsQualityScatterPlot_dot  as png (or png for --legacy)
+2025-04-23 14:33:59,950 Saved output/Allium_Ursinum_ITS_barcode82/LengthvsQualityScatterPlot_kde  as png (or png for --legacy)
+2025-04-23 14:33:59,951 Created LengthvsQual plot
+2025-04-23 14:33:59,951 Writing html report.
+2025-04-23 14:33:59,959 Finished!
