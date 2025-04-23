@@ -47,7 +47,9 @@ def build_kmer_dataset_cleaned(fasta_file, k=5):
 
     for record in tqdm(records):
         seq = clean_sequence(str(record.seq))
-        label = record.description.split()[1]  # First word after accession
+        # label = record.description.split()[1]  # First word after accession
+        label = record.description.split(" ")[1].split()[0]
+
         kmer_counts = count_kmers(seq, k)
         norm_counts = normalize_counts(kmer_counts)
 
@@ -65,8 +67,8 @@ def save_as_parquet(df, output_path):
 
 # === MAIN ===
 if __name__ == "__main__":
-    fasta_path = "matK_angiospermae.fasta"  # Adjust to your file path
-    output_parquet = "matK_angiospermae.parquet"
+    fasta_path = "matK_angiospermae_bold.fasta"  # Adjust to your file path
+    output_parquet = "matK_angiospermae_bold.parquet"
     k = 5
 
     df_kmers = build_kmer_dataset_cleaned(fasta_path, k=k)
