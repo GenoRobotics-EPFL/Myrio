@@ -1,3 +1,4 @@
 *.fasta
 *.parquet
 *.joblib
+*.json

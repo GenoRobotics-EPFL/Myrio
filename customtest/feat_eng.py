@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import re
+import time
 
 def reverse_complement(seq):
     complement = str.maketrans("ATCG", "TAGC")
@@ -67,13 +68,10 @@ def save_as_parquet(df, output_path):
 
 # === MAIN ===
 if __name__ == "__main__":
-    # Measure time
-    import time
-    start_time = time.time()
-    fasta_path = "customtest/generated_dataset/generated.fasta"
-    output_parquet = "customtest/generated_dataset/generated.parquet"
+    fasta_path = "matK_angiospermae_bold.fasta"  # Adjust to your file path
+    output_parquet = "matK_angiospermae_bold.parquet"
     k = 5
-
+    start_time = time.time()
     df_kmers = build_kmer_dataset_cleaned(fasta_path, k=k)
     save_as_parquet(df_kmers, output_parquet)
     end_time = time.time()
