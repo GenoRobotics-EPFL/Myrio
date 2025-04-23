@@ -27,8 +27,7 @@ class Cli(Command):
             case Ok(value):
                 pass
             case Err(value):
-                cprint("Error", fg="red", bold=True, end="")
-                print(":", value)
+                cprint("Error", fg="red", bold=True, end=f": {value}\n")
 
     async def _run(self) -> Result[None, RuntimeError]:
         async with Spinner("Checking filepath", capture=False) as spin:

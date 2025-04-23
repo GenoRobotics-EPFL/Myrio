@@ -14,6 +14,7 @@ just init
 The `just init` command does the following:
 ``` yaml
 init:
+    uv sync
     uv pip install -e .
     uv run lefthook install
 ```
