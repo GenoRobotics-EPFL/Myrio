@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "clypi>=1.2.18",
+    "isonclust>=0.0.6.1",
+    "polars>=1.27.1",
     "safe-result>=4.0.3",
 ]
 
@@ -38,6 +40,9 @@ addopts = "--benchmark-skip"
 console_output_style = "count"
 python_functions = "test_* *_test bench_* *_bench"
 python_files = "test_*.py *_test.py bench_*.py *_bench.py"
+
+[tool.ruff]
+line-length = 120
 
 [tool.ruff.lint]
 extend-select = ["I"]

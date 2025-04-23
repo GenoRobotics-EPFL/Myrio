@@ -37,9 +37,7 @@ class Cli(Command):
                     await spin.done()
                 case False:
                     await spin.fail()
-                    return Err(
-                        RuntimeError("Filepath does not point to an existing file.")
-                    )
+                    return Err(RuntimeError("Filepath does not point to an existing file."))
 
         data = None  # noqa: F841
         async with Spinner("Pre-processing reads", capture=False) as spin:
