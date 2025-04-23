@@ -1,7 +1,7 @@
 [project]
-name = "perca"
+name = "myrio"
 version = "0.0.1"
-description = "A pipline for taxonomic identification of plants using sequencing data."
+description = "A pipeline for taxonomic identification of plants using sequencing data."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
-perca = "cli:main"
+myrio = "cli:main"
 
 [tool.uv]
 dev-dependencies = [

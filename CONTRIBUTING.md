@@ -6,8 +6,8 @@ We also highly recommend installing [`just`](https://github.com/casey/just#insta
 
 Once installed, set up the project by running:
 ``` bash
-git clone https://github.com/GenoRobotics-EPFL/Perca
-cd Perca
+git clone https://github.com/GenoRobotics-EPFL/Myrio
+cd Myrio
 just init
 ```
 
@@ -28,11 +28,11 @@ init:
 
 
 ### Usage
-Perca is a CLI application. To run it:
+Myrio is a CLI application. To run it:
 ``` bash
 # Assuming the virtual environment is activated
 # if not, then run `source .venv/bin/activate`
-perca [ARGS]
+myrio [ARGS]
 ```
 
 Alternatively, you can run it directly using uv:
