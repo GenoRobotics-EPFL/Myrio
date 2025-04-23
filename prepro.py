@@ -51,7 +51,9 @@ def load_data(input_expedition_folder, barcode_nb):
 
     return input_fastq_path, input_ref_path, output_path
 
-fastq, input, output = load_data("expedition_jardin_botanique",82)
+fastq, input, output = load_data("flongle_fulvia_expedition",10)
+
+file = "data/flongle_fulvia_expedition/Begonia_Masoniana_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode8/Begonia_Masoniana_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode8.fastq"
 
 #Data visualization
 
@@ -78,14 +80,13 @@ def run_nanoplot(input_fastq, output_dir="nanoplot_results"):
     "--loglength"
 ]
 
-
     print(f"Running NanoPlot:\n{' '.join(cmd)}")
     subprocess.run(cmd, check=True)
 
-run_nanoplot(fastq, output_dir=output)
+run_nanoplot(file, output_dir=output)
+
 
 #Preprocessing the data
-
 
 def filter_fastq(input_fastq, output_fastq, threshold_fastq=10):
     """

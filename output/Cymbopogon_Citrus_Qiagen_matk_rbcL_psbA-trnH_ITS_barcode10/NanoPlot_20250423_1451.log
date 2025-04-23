@@ -1,0 +1,24 @@
+2025-04-23 14:51:54,157 NanoPlot 1.44.1 started with arguments Namespace(threads=4, verbose=True, store=False, raw=False, huge=False, outdir='output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10', no_static=False, prefix='', tsv_stats=False, only_report=False, info_in_report=False, maxlength=None, minlength=None, drop_outliers=False, downsample=None, loglength=True, percentqual=False, alength=False, minqual=None, runtime_until=None, readtype='1D', barcoded=False, no_supplementary=False, color='#4CB391', colormap='Greens', format=['png'], plots=['kde'], legacy=None, listcolors=False, listcolormaps=False, no_N50=False, N50=True, title=None, font_scale=1, dpi=100, hide_stats=False, fastq=['data/flongle_fulvia_expedition/Begonia_Masoniana_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode8/Begonia_Masoniana_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode8.fastq'], fasta=None, fastq_rich=None, fastq_minimal=None, summary=None, bam=None, ubam=None, cram=None, pickle=None, feather=None, path='output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/')
+2025-04-23 14:51:54,158 Python version is: 3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:19:24) [Clang 18.1.8 ]
+2025-04-23 14:51:55,515 Nanoget: Gathered all metrics of 3872 reads
+2025-04-23 14:51:55,524 Calculated statistics
+2025-04-23 14:51:55,524 Using sequenced read lengths for plotting.
+2025-04-23 14:51:55,525 Using log10 scaled read lengths.
+2025-04-23 14:51:55,526 NanoPlot:  Valid color #4CB391.
+2025-04-23 14:51:55,527 NanoPlot:  Valid colormap Greens.
+2025-04-23 14:51:55,527 NanoPlot:  Creating length plots for Read length.
+2025-04-23 14:51:55,528 NanoPlot: Using 3872 reads with read length N50 of 523bp and maximum of 1195bp.
+2025-04-23 14:51:56,624 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/WeightedHistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:51:57,307 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/WeightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:51:57,943 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/Non_weightedHistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:51:58,607 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/Non_weightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-23 14:51:58,608 NanoPlot: Creating yield by minimal length plot for Read length.
+2025-04-23 14:51:59,592 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/Yield_By_Length  as png (or png for --legacy)
+2025-04-23 14:51:59,593 Created length plots
+2025-04-23 14:51:59,594 NanoPlot: Creating Read lengths vs Average read quality plots using 3872 reads.
+2025-04-23 14:52:00,296 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/LengthvsQualityScatterPlot_kde  as png (or png for --legacy)
+2025-04-23 14:52:00,297 NanoPlot: Creating Read lengths vs Average read quality plots using 3872 reads.
+2025-04-23 14:52:01,006 Saved output/Cymbopogon_Citrus_Qiagen_matk_rbcL_psbA-trnH_ITS_barcode10/LengthvsQualityScatterPlot_loglength_kde  as png (or png for --legacy)
+2025-04-23 14:52:01,006 Created LengthvsQual plot
+2025-04-23 14:52:01,006 Writing html report.
+2025-04-23 14:52:01,014 Finished!
