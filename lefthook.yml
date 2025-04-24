@@ -1,7 +1,0 @@
-pre-commit:
-    parallel: false
-    commands:
-        ruff-format:
-            run: uv run ruff format
-        ruff-fix:
-            run: uv run ruff check --fix
