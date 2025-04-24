@@ -109,7 +109,9 @@ class Raxtax:
                 pl.col("local_confidence_score").cast(pl.Float64),
                 pl.col("global_confidence_score").cast(pl.Float64),
             )
-            .sort(by="species_score", )
+            .sort(
+                by="species_score",
+            )
         )
         return Ok(Raxtax(df))
 
