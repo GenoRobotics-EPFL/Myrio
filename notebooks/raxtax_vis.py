@@ -1,5 +1,3 @@
-
-
 import marimo
 
 __generated_with = "0.13.2"
@@ -9,7 +7,6 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     import matplotlib.pyplot as plt
-    import polars as pl
     import seaborn as sns
     from safe_result import Err, Ok
 
@@ -33,6 +30,7 @@ def _(Err, Ok, rx):
                 return rax.df
             case Err(err):
                 print(err)
+
     return (get_df,)
 
 
@@ -42,7 +40,6 @@ async def _(get_df, plt):
         input="./data/expedition_jardin_botanique/Ficus_religiosa_rbcL_barcode94/Ficus_religiosa_reference_seq.fasta",
         db="./database/Magnoliopsida_rbcL_raxdb.fasta",
     )
-
 
     def _():
         fig, ax1 = plt.subplots(1, 1, figsize=(6, 3))
@@ -95,7 +92,6 @@ async def _(get_df, plt):
 
         plt.legend()
         return fig
-
 
     _()
     return

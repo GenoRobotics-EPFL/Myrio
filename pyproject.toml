@@ -53,7 +53,6 @@ line-length = 120
 extend-select = ["I"]
 ignore = ["E702", "F841"] # Allows for multiple statements on a single line
 
-
 [tool.pyright]
 include = ["src"]
 exclude = ["notebooks", "ignore"]

@@ -97,16 +97,20 @@ class Raxtax:
 
             parsed_raxtax_output.append(np.array(line))
 
-        df = pl.DataFrame(parsed_raxtax_output, schema=Raxtax.get_row_schema(), orient="row").with_columns(
-            pl.col("phylum_score").cast(pl.Float64),
-            pl.col("class_score").cast(pl.Float64),
-            pl.col("order_score").cast(pl.Float64),
-            pl.col("family_score").cast(pl.Float64),
-            pl.col("genus_score").cast(pl.Float64),
-            pl.col("species_score").cast(pl.Float64),
-            pl.col("local_confidence_score").cast(pl.Float64),
-            pl.col("global_confidence_score").cast(pl.Float64),
-        ).sort(by="species_score")
+        df = (
+            pl.DataFrame(parsed_raxtax_output, schema=Raxtax.get_row_schema(), orient="row")
+            .with_columns(
+                pl.col("phylum_score").cast(pl.Float64),
+                pl.col("class_score").cast(pl.Float64),
+                pl.col("order_score").cast(pl.Float64),
+                pl.col("family_score").cast(pl.Float64),
+                pl.col("genus_score").cast(pl.Float64),
+                pl.col("species_score").cast(pl.Float64),
+                pl.col("local_confidence_score").cast(pl.Float64),
+                pl.col("global_confidence_score").cast(pl.Float64),
+            )
+            .sort(by="species_score", )
+        )
         return Ok(Raxtax(df))
 
 
