@@ -147,7 +147,7 @@ def run(input_file_path, gene_names):
             print(blastn_command)
             os.system(blastn_command)
 
-            blast_records = NCBIXML.parse(open(f"./data/output/blast/{i}/id_result.xml", "r"))
+            blast_records = NCBIXML.parse(open(f"./data/output/blast/{i}/{gene_name}/id_result.xml", "r"))
             blast_record = next(blast_records)  # you only have one query
 
             
