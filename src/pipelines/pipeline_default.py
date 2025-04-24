@@ -11,7 +11,7 @@ def run(input_file_path, gene_names):
 
     # TODO uncomment commands later
 
-    ENABLE_LONG_TIME_STUFF = False
+    ENABLE_LONG_TIME_STUFF = True
 
     if ENABLE_LONG_TIME_STUFF:
         os.system("rm -rf ./data/output/*")
