@@ -1,0 +1,24 @@
+2025-04-24 10:22:57,950 NanoPlot 1.44.1 started with arguments Namespace(threads=4, verbose=True, store=False, raw=False, huge=False, outdir='prepr_output', no_static=False, prefix='', tsv_stats=False, only_report=False, info_in_report=False, maxlength=None, minlength=None, drop_outliers=False, downsample=None, loglength=True, percentqual=False, alength=False, minqual=None, runtime_until=None, readtype='1D', barcoded=False, no_supplementary=False, color='#4CB391', colormap='Greens', format=['png'], plots=['kde'], legacy=None, listcolors=False, listcolormaps=False, no_N50=False, N50=True, title=None, font_scale=1, dpi=100, hide_stats=False, fastq=['filtered_reads.fastq'], fasta=None, fastq_rich=None, fastq_minimal=None, summary=None, bam=None, ubam=None, cram=None, pickle=None, feather=None, path='prepr_output/')
+2025-04-24 10:22:57,950 Python version is: 3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:19:24) [Clang 18.1.8 ]
+2025-04-24 10:22:59,298 Nanoget: Gathered all metrics of 1106 reads
+2025-04-24 10:22:59,305 Calculated statistics
+2025-04-24 10:22:59,306 Using sequenced read lengths for plotting.
+2025-04-24 10:22:59,306 Using log10 scaled read lengths.
+2025-04-24 10:22:59,307 NanoPlot:  Valid color #4CB391.
+2025-04-24 10:22:59,308 NanoPlot:  Valid colormap Greens.
+2025-04-24 10:22:59,308 NanoPlot:  Creating length plots for Read length.
+2025-04-24 10:22:59,308 NanoPlot: Using 1106 reads with read length N50 of 492bp and maximum of 8544bp.
+2025-04-24 10:23:00,129 Saved prepr_output/WeightedHistogramReadlength  as png (or png for --legacy)
+2025-04-24 10:23:00,788 Saved prepr_output/WeightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-24 10:23:01,445 Saved prepr_output/Non_weightedHistogramReadlength  as png (or png for --legacy)
+2025-04-24 10:23:02,231 Saved prepr_output/Non_weightedLogTransformed_HistogramReadlength  as png (or png for --legacy)
+2025-04-24 10:23:02,231 NanoPlot: Creating yield by minimal length plot for Read length.
+2025-04-24 10:23:03,079 Saved prepr_output/Yield_By_Length  as png (or png for --legacy)
+2025-04-24 10:23:03,080 Created length plots
+2025-04-24 10:23:03,082 NanoPlot: Creating Read lengths vs Average read quality plots using 1106 reads.
+2025-04-24 10:23:03,841 Saved prepr_output/LengthvsQualityScatterPlot_kde  as png (or png for --legacy)
+2025-04-24 10:23:03,843 NanoPlot: Creating Read lengths vs Average read quality plots using 1106 reads.
+2025-04-24 10:23:04,521 Saved prepr_output/LengthvsQualityScatterPlot_loglength_kde  as png (or png for --legacy)
+2025-04-24 10:23:04,521 Created LengthvsQual plot
+2025-04-24 10:23:04,521 Writing html report.
+2025-04-24 10:23:04,528 Finished!
