@@ -5,8 +5,10 @@ description = "A pipeline for taxonomic identification of plants using sequencin
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "aiofiles>=24.1.0",
     "clypi>=1.2.18",
     "isonclust>=0.0.6.1",
+    "numpy>=2.2.5",
     "polars>=1.27.1",
     "safe-result>=4.0.3",
 ]
@@ -23,6 +25,9 @@ dev-dependencies = [
     "coverage>=7.8.0",
     "codespell>=2.4.1",
     "lefthook>=1.11.11",
+    "marimo>=0.13.2",
+    "seaborn>=0.13.2",
+    "matplotlib>=3.10.1",
 ]
 
 [build-system]
@@ -46,4 +51,8 @@ line-length = 120
 
 [tool.ruff.lint]
 extend-select = ["I"]
-ignore = ["E702"] # Allows for multiple statements on a single line
+ignore = ["E702", "F841"] # Allows for multiple statements on a single line
+
+[tool.pyright]
+include = ["src"]
+exclude = ["notebooks", "ignore"]
