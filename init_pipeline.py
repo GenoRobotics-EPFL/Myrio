@@ -4,13 +4,13 @@ import os
 from pathlib import Path
 import useful
 
-
+#Select expidition and barcode
 Expedition = "flongle_fulvia_expedition"
 Sample_barcode = 10
 
 fastq, input, output = prepro.load_data(Expedition, Sample_barcode)
 
-# Main function to run the preprocessing pipeline
+# visualization and preprocessing
 prepro.run_nanoplot(fastq, output_dir=output)
 prepro.preprocessing(fastq, "filtered_reads.fastq")
 preproutput = os.path.join("prepr_output")
@@ -24,8 +24,9 @@ clustering.run_isONclust("filtered_reads.fastq", clustoutput)
 separated_clusters = os.path.join("cluster_output/seperated_clusters") 
 clustering.write_clustered_fastq("cluster_output/final_clusters.tsv", "filtered_reads.fastq", separated_clusters)
 
-# Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
-
+"""
+Decontamination (Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
+"""
 
 # Setup paths
 folder = Path("cluster_output/seperated_clusters") #fetching the clusters
