@@ -1,11 +1,12 @@
 import re
 from os import R_OK, W_OK, PathLike, access
 from pathlib import Path
+from typing import Any
 
 import polars as pl
 
 
-def check_filepath(filepath: str | PathLike, readable: bool = False, writeable: bool = False) -> bool:
+def check_filepath(filepath: str | PathLike[Any], readable: bool = False, writeable: bool = False) -> bool:
     """Checks if a file exists and more.
 
     Args:

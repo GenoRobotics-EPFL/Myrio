@@ -1,0 +1,131 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.13.2"
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "5904688f468cba8b26b7ae31ac37b513",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "9f45072a2e47031f0bff9c245583130f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "ae816cc2cfdab4c73b568eb6a9f2e598",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "application/json": "[\"processid\", \"sampleid\", \"recordID\", \"catalognum\", \"fieldnum\", \"institution_storing\", \"collection_code\", \"bin_uri\", \"phylum_taxID\", \"phylum_name\", \"class_taxID\", \"class_name\", \"order_taxID\", \"order_name\", \"family_taxID\", \"family_name\", \"subfamily_taxID\", \"subfamily_name\", \"genus_taxID\", \"genus_name\", \"species_taxID\", \"species_name\", \"subspecies_taxID\", \"subspecies_name\", \"identification_provided_by\", \"identification_method\", \"identification_reference\", \"tax_note\", \"voucher_status\", \"tissue_type\", \"collection_event_id\", \"collectors\", \"collectiondate_start\", \"collectiondate_end\", \"collectiontime\", \"site_code\", \"sampling_protocol\", \"lifestage\", \"sex\", \"reproduction\", \"habitat\", \"associated_specimens\", \"associated_taxa\", \"extrainfo\", \"notes\", \"lon\", \"coord_source\", \"depth\", \"elev_accuracy\", \"depth_accuracy\", \"country\", \"province_state\", \"region\", \"sector\", \"exactsite\", \"image_ids\", \"image_urls\", \"media_descriptors\", \"captions\", \"copyright_holders\", \"copyright_years\", \"copyright_licenses\", \"copyright_institutions\", \"photographers\", \"sequenceID\", \"markercode\", \"genbank_accession\", \"nucleotides\", \"trace_ids\", \"trace_names\", \"trace_links\", \"run_dates\", \"sequencing_centers\", \"directions\", \"seq_primers\", \"marker_codes\"]"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "7d5cf2b8cf0b725c94d09f7a384d3507",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='bkHC-0' random-id='0725cccc-ca88-e48c-9dff-f45317dba915'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;./@file/10267-46235-bjJvXPlR.json&quot;' data-total-rows='306812' data-total-columns='11' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;processid&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;phylum_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;class_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;order_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;family_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;subfamily_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;genus_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;species_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;subspecies_name&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;markercode&quot;, [&quot;string&quot;, &quot;str&quot;]], [&quot;nucleotides&quot;, [&quot;string&quot;, &quot;str&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "39834caf934c16e8bd767fee75427603",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "12aea49247e60c535c0d3e87febbaae0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "90c38aaf1d321d11dc1c8ec96d94b3c5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "0ee45604db3def4e93844a4dc7d95598",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "6efe457d03223ddc3c3915df535abff9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    }
+  ]
+}

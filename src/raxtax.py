@@ -2,6 +2,7 @@ import asyncio as aio
 import dataclasses
 from os import PathLike
 from pathlib import Path
+from typing import Any
 
 import aiofiles as aiof
 import numpy as np
@@ -18,8 +19,8 @@ class Raxtax:
     @staticmethod
     def get_row_schema() -> list[str]:
         return [
-            "phyllum",
-            "phyllum_score",
+            "phylum",
+            "phylum_score",
             "class",
             "class_score",
             "order",
@@ -35,7 +36,7 @@ class Raxtax:
         ]
 
     @staticmethod
-    async def build(input: str | PathLike, db: str | PathLike) -> Result["Raxtax", RuntimeError]:
+    async def build(input: str | PathLike[Any], db: str | PathLike[Any]) -> Result["Raxtax", RuntimeError]:
         """Builds the Raxtax class by executing raxtab in a subprocess and parsing its results.
 
         Args:

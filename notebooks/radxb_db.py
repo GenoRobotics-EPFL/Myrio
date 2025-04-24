@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.13.0"
+__generated_with = "0.13.2"
 app = marimo.App(width="medium")
 
 
@@ -15,7 +15,7 @@ def _():
 
 @app.cell
 def _(pathlib):
-    filepath: pathlib.Path = pathlib.Path("_GenoRobotics/Myrio/ignore/bold_data_utf8.tsv")
+    filepath: pathlib.Path = pathlib.Path("./ignore/bold_data_utf8.tsv")
     return (filepath,)
 
 
@@ -69,27 +69,32 @@ def _(columns, filepath, pl):
 
 
 @app.cell
-def _(phyllum, pl):
+def _(pl):
     def gen_fasta(filename: str, df: pl.DataFrame):
         # ('CAATB165-11', 'Tracheophyta', 'Magnoliopsida', 'Gentianales', 'Apocynaceae', None, 'Matelea', 'Matelea nigra', None, 'rbcL', '--------CC')
         def phylum(st):
             return f"phylum:{st.replace(' ', '_')}" if st is not None else ""
+
         def clas(st):
             return f"class:{st.replace(' ', '_')}" if st is not None else ""
+
         def order(st):
             return f"order:{st.replace(' ', '_')}" if st is not None else ""
+
         def family(st):
             return f"family:{st.replace(' ', '_')}" if st is not None else ""
+
         def genus(st):
             return f"genus:{st.replace(' ', '_')}" if st is not None else ""
+
         def species(st):
             return f"species:{st.replace(' ', '_')}" if st is not None else ""
 
         fasta_string = ""
         for row in df.rows():
-            fasta_string += f">BOLD_PID={row[0]}|MARKER_CODE={row[9]};tax={phyllum(row[1])},{clas(row[2])},{order(row[3])},{family(row[4])},{genus(row[6])},{species(row[7])};\n{row[-1].strip().replace('-', 'N').replace('I', 'N')}\n"
+            fasta_string += f">BOLD_PID={row[0]}|MARKER_CODE={row[9]};tax={phylum(row[1])},{clas(row[2])},{order(row[3])},{family(row[4])},{genus(row[6])},{species(row[7])};\n{row[-1].strip().replace('-', 'N').replace('I', 'N')}\n"
 
-        with open(f"_GenoRobotics/Myrio/ignore/{filename}.fasta", "w") as file:
+        with open(f"./database/{filename}.fasta", "w") as file:
             file.write(fasta_string)
 
     return (gen_fasta,)
