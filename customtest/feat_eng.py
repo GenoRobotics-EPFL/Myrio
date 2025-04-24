@@ -67,10 +67,16 @@ def save_as_parquet(df, output_path):
 
 # === MAIN ===
 if __name__ == "__main__":
-    fasta_path = "matK_angiospermae_bold.fasta"  # Adjust to your file path
-    output_parquet = "matK_angiospermae_bold.parquet"
+    # Measure time
+    import time
+    start_time = time.time()
+    fasta_path = "customtest/generated_dataset/generated.fasta"
+    output_parquet = "customtest/generated_dataset/generated.parquet"
     k = 5
 
     df_kmers = build_kmer_dataset_cleaned(fasta_path, k=k)
     save_as_parquet(df_kmers, output_parquet)
-
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"⏱️ Elapsed time: {elapsed_time:.2f} seconds")
+    print("✅ Finished filtering and processing k-mer dataset.")
