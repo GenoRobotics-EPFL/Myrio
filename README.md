@@ -2,15 +2,18 @@
 
 _If you are a contributor, please refer to [this document](/CONTRIBUTING.md)._
 
-Important files
+### Note
+All of the works are in customtest folder. Nothing else has been changed outside of the folder.
 
-feat_eng.py: converts input FASTA into k-mer format and change it to binary file (parquet)
-models.py: train models (done on RCP GPUs). The results are 3 json files.
-model_test.py: load models and predicts given FASTA.
+### Important files
 
-Files used for debugging
-EDA.py: generates genus frequency table of a single perquet file
-read_parquet.py: reads binary file and gives useful information inside
+- feat_eng.py: converts input FASTA into k-mer format and change it to binary file (parquet)
+- models.py: train models (done on RCP GPUs). The results are 3 json files.
+- model_test.py: load models and predicts given FASTA.
+
+### Files used for debugging
+- EDA.py: generates genus frequency table of a single perquet file
+- read_parquet.py: reads binary file and gives useful information inside
 
 
 To use the trained model, you only need 3 json files and feat_eng.py to convert FASTA to parquet format, which is an input format for the model. 
