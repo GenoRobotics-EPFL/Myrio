@@ -1,0 +1,33 @@
+name: geno_test_pipeline
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+  
+# isONclust3 need rust then install with cargo
+# blastn install manually from ncbi website
+
+dependencies:
+  - python==3.9  # RuntimeError: `medaka` is unsupported on your version of python, please use python 3.6-3.9 (inclusive) (got error when adding medaka as pip dep)
+  - jupyter 
+  - pip
+  - minimap2
+  - racon
+  - nanoplot
+  - seqkit
+  - isonclust 
+  - isonclust2
+  - mosdepth
+  - mmseqs2
+  - bcftools # dep for medaka not installed automatically ??
+  - pip:
+    - pyspoa
+    - matplotlib
+    - parasail
+    - pysam
+    - biopython
+    - scipy
+    - pandas
+    - numpy
+    - medaka
+    - pyabpoa # needed dep for medaka thats not installed automatically
