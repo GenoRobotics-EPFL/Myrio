@@ -3,7 +3,6 @@ import os.path as ospath
 import subprocess
 from Bio import SeqIO
 
-
 #Loading the data
 
 def load_data(input_expedition_folder, barcode_nb):
@@ -14,7 +13,7 @@ def load_data(input_expedition_folder, barcode_nb):
         input_expedition_folder (str): Folder name inside 'data/'.
         barcode_nb (int): Barcode number to search for.
 
-    Returns:
+    Returns:s
         input_fastq_path (str): Path to the .fastq file.
         input_ref_path (str): Path to the .fasta reference file.
         output_path (str): Path for the output directory.
@@ -52,56 +51,6 @@ def load_data(input_expedition_folder, barcode_nb):
 
     return input_fastq_path, input_ref_path, output_path
 
-
-#Data visualization
-
-def run_nanoplot(input_fastq, output_dir="nanoplot_results"):
-    """
-    Runs NanoPlot to generate quality and length distribution graphs from a FASTQ file.
-
-    Parameters:
-        input_fastq (str): Path to the FASTQ file.
-        output_dir (str): Directory where NanoPlot outputs will be saved.
-    """
-    # Ensure output directory exists
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Build command
-   
-    cmd = [
-    "NanoPlot",
-    "--fastq", input_fastq,
-    "--outdir", output_dir,
-    "--verbose",
-    "--N50",
-    "--plots", "kde",  # or all
-    "--loglength"
-]
-
-    print(f"Running NanoPlot:\n{' '.join(cmd)}")
-    subprocess.run(cmd, check=True)
-
-
-#Preprocessing the data
-
-def read_check(input_fastq, threshold_fastq=10):
-    """
-    Run seqkit to filter FASTQ reads by quality and length, and check if the FASTQ file has enough reads.
-    """
-    # Check if the FASTQ file has enough reads
-    too_small = True
-    n = 0
-    for read in SeqIO.parse(input_fastq, "fastq"):
-        n += 1
-        if n >= threshold_fastq:
-            too_small = False
-            break
-
-    if too_small:
-        raise ValueError(f"The fastq file you selected contains {n} reads, less than the set threshold of {threshold_fastq} to run the pipeline")
-
-    print("Passed control!")
-
 def filter_fastq_with_seqkit(input_file, output_file, min_len=150, min_qual=10,max_qual=60):
     # Construct the SeqKit command
     command = [
@@ -118,15 +67,11 @@ def filter_fastq_with_seqkit(input_file, output_file, min_len=150, min_qual=10,m
     print(f"Filtered reads written to {output_file}")
 
 #Preprocessing function
-
 def preprocessing(input_fastq, output_fastq):
     read_check(input_fastq)
     filter_fastq_with_seqkit(input_fastq, output_fastq)
-    return 
 
-
-#visualization after preprocessing
-
+#visualization 
 def run_nanoplot(input_fastq, output_dir="nanoplot_results"):
     """
     Runs NanoPlot to generate quality and length distribution graphs from a FASTQ file.
@@ -153,10 +98,7 @@ def run_nanoplot(input_fastq, output_dir="nanoplot_results"):
     print(f"Running NanoPlot:\n{' '.join(cmd)}")
     subprocess.run(cmd, check=True)
 
-# Main function to run the preprocessing pipeline
 
-fastq, input, output = load_data("flongle_fulvia_expedition",10)
-run_nanoplot(fastq, output_dir=output)
-filtered = preprocessing(fastq, "filtered_reads.fastq")
-preproutput = os.path.join("prepr_output")
-run_nanoplot("filtered_reads.fastq", output_dir=preproutput)
+
+
+
