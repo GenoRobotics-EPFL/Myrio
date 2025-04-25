@@ -72,7 +72,7 @@ class Cli(Command):
                     case Ok(fps):
                         cluster_fps.extend(fps)
                         _diff = time() - _start
-                        await spin.done(msg=f"Clustering reads → {_diff:.3f} s ; {len(fps)} clusters")
+                        await spin.done(msg=f"Clustering reads → {_diff:.3f} s, got {len(fps)} clusters")
                     case Err(error):
                         await spin.fail()
                         raise error
@@ -90,6 +90,7 @@ class Cli(Command):
                         string = "\n".join([f">{id}\n{seq}" for (id, seq) in sequences])
                         async with aiof.open(output_fp, "w") as file:
                             _ = await file.write(string)
+                        _diff = time() - _start
                         await spin.done(f"Generating consensus → {_diff:.3f} s")
                     case Err(error):
                         await spin.fail()
@@ -108,12 +109,13 @@ class Cli(Command):
                 match result:
                     case Ok(val):
                         raxtax = val
+                        _diff = time() - _start
                         await spin.done(f"Running raxtax → {_diff:.3f} s")
                     case Err(error):
                         await spin.fail()
                         raise error
 
-            cprint("\n\n------ Best Raxtax Result  ------\n", bold=True)
+            cprint("\n------  Best Raxtax Result  ------\n", bold=True)
 
             raxtax.prettify()
             best_raxtax_match = raxtax.df.row(0)
@@ -172,7 +174,7 @@ class Cli(Command):
                 )
             )
 
-            cprint("------ Raxtax Results → saved to output/results.csv  ------\n", bold=True)
+            cprint("\n------  Raxtax Results → saved to output/results.csv  ------\n", bold=True)
 
             print(raxtax.df.select(raxtax.df.columns[-8:]))
             raxtax.df.write_csv("output/results.csv")
