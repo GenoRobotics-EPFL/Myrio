@@ -7,7 +7,7 @@ from safe_result import safe
 
 
 @safe
-def spoa_consensus(cluster_fps: list[Path], second_pass: bool = False) -> list[dict[str, str]]:
+def spoa_consensus(cluster_fps: list[Path], second_pass: bool = False) -> list[tuple[str, str]]:
     os.environ["OMP_NUM_THREADS"] = "1"
     consensus_sequences = []
     for cluster_fp in cluster_fps:  # TODO use threads to // and remove debug slicing
@@ -23,6 +23,6 @@ def spoa_consensus(cluster_fps: list[Path], second_pass: bool = False) -> list[d
         if second_pass:
             cons, _ = spoa.poa([cons, *sequences], min_coverage=min_cov, genmsa=False)
 
-        consensus_sequences.append({"cluster": cluster_fp.name, "sequence": cons})
+        consensus_sequences.append((cluster_fp.name, cons))
 
     return consensus_sequences

@@ -1,13 +1,10 @@
-import asyncio as aio
 import dataclasses
-from os import PathLike
 from pathlib import Path
-from typing import Any
 
 import aiofiles as aiof
 import numpy as np
 import polars as pl
-from safe_result import Err, Ok, Result, ok
+from safe_result import Err, Ok, Result, safe
 
 import utils
 
@@ -36,7 +33,8 @@ class Raxtax:
         ]
 
     @staticmethod
-    async def build(input: str | PathLike[Any], db: str | PathLike[Any]) -> Result["Raxtax", Exception]:
+    @safe
+    async def build(input_fp: Path, db_fp: Path, output_dir: Path) -> Result["Raxtax", Exception]:
         """Builds the Raxtax class by executing raxtab in a subprocess and parsing its results.
 
         Args:
@@ -46,33 +44,26 @@ class Raxtax:
         Returns:
             A result containing the RaxtaxResult if successfull.
         """
-        if not utils.check_filepath(input, readable=True):
-            return Err(RuntimeError("Input filepath is invalid."))
-        if not utils.check_filepath(db, readable=True):
-            return Err(RuntimeError("DB filepath is invalid."))
 
         raxtax_output = None
-        async with aiof.tempfile.TemporaryDirectory(prefix="raxtax_") as dir:
-            # fmt: off
-            command = [
-                "raxtax",
-                "--query-file", str(input),
-                "--database-path", str(db),
-                "--prefix", str(dir),
-                "--quiet",
-                "--redo",
-                "--tsv",  # Raxtax .tsv output is easier to parse
-            ]
-            # fmt: on
-            command_result = await utils.exec_command(command)
-            if not ok(command_result):
-                return command_result  # pyright: ignore
+        # fmt: off
+        command = [
+            "raxtax",
+            "--query-file", str(input_fp),
+            "--database-path", str(db_fp),
+            "--prefix", str(output_dir),
+            "--quiet",
+            "--redo",
+            "--tsv",  # Raxtax .tsv output is much easier to parse
+        ]
+        # fmt: on
+        (await utils.exec_command(command)).unwrap()
 
-            output_filepath = Path(dir, "raxtax.tsv")
-            if not output_filepath.exists():
-                return Err(RuntimeError(f"Raxtax seems to have failed, `{output_filepath}` does not exist"))
-            async with aiof.open(output_filepath, "r") as output_file:
-                raxtax_output = await output_file.readlines()
+        output_fp = Path(output_dir, "raxtax.tsv")
+        if not output_fp.exists():
+            return Err(RuntimeError(f"Raxtax seems to have failed, `{output_fp}` does not exist"))
+        async with aiof.open(output_fp, "r") as output_file:
+            raxtax_output = await output_file.readlines()
 
         # this is pretty hacky, unsafe even, this requires sequences in the fasta database to look something like the following.
         # >BOLD_PID=CAATB198-11|MARKER_CODE=rbcL;tax=phylum:Tracheophyta,class:Magnoliopsida,order:Fabales,family:Fabaceae,genus:Bauhinia,species:Bauhinia_cheilantha;
@@ -111,8 +102,4 @@ class Raxtax:
 
 
 if __name__ == "__main__":
-    match aio.run(Raxtax.build("ignore/figus_matK_ref.fasta", "ignore/Magnoliopsida_matK_raxdb.fasta")):
-        case Ok(val):
-            print(val)
-        case Err(error):
-            print(error)
+    pass

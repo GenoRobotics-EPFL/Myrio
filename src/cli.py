@@ -10,6 +10,7 @@ from typing_extensions import override
 
 from consensus import spoa_consensus
 from preprocessing import preprocessing
+from raxtax import Raxtax
 from selection import run_isONclust3
 from utils import check_filepath
 
@@ -71,16 +72,17 @@ class Cli(Command):
                         raise error
 
             async with Spinner("Generating a consensus sequence", capture=False) as spin:
+                output_fp = Path(tmp, "consensus.fasta")
                 executor = ProcessPoolExecutor(
                     max_workers=1
                 )  # This allows us to run spoa_consensus fully outside the main Python process, so our spinner doesn't freeze.
                 loop = asyncio.get_running_loop()
                 result = await loop.run_in_executor(executor, spoa_consensus, cluster_fps)
                 match result:
-                    case Ok(seqs):
-                        with open("test.txt", "w") as f:
-                            _ = f.write(str(seqs))
-
+                    case Ok(sequences):
+                        string = "\n".join([f">consensus_sequence_from_cluster_{id}\n{seq}" for (id, seq) in sequences])
+                        async with aiof.open(output_fp, "w") as file:
+                            _ = file.write(string)
                         await spin.done()
                     case Err(error):
                         await spin.fail()
@@ -93,7 +95,8 @@ class Cli(Command):
             """
 
             async with Spinner("Indentifying the species", capture=False) as spin:
-                await asyncio.sleep(1.0)
+                input_fp = Path(tmp, "consensus.fasta")
+                Raxtax.build()
                 await spin.done()
 
 

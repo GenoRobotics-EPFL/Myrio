@@ -3,14 +3,15 @@ import os
 from pathlib import Path
 from types import NoneType
 
-from safe_result import Err, Ok, Result, ok
+from safe_result import Result, safe_async
 
 import utils
 
 
+@safe_async
 async def run_isONclust3(
-    fastq_file: Path, output_folder: Path, post_cluster_flag: bool = True, n_flag: int = 3
-) -> Result[list[Path], Exception]:
+    fastq_fp: Path, output_dir: Path, post_cluster_flag: bool = True, n_flag: int = 3
+) -> list[Path]:
     """Runs isONclust3 on the provided `fastq_file`.
 
     Args:
@@ -19,13 +20,13 @@ async def run_isONclust3(
         n_flag (int): Minimum number of reads for cluster.
     """
     # Ensure the output directory exists
-    os.makedirs(output_folder, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
     # fmt: off
     command = [
         "isONclust3",
-        "--fastq", str(fastq_file),
-        "--outfolder", str(output_folder),
+        "--fastq", str(fastq_fp),
+        "--outfolder", str(output_dir),
         "--mode", "ont",
         "--n", str(n_flag)
     ]
@@ -33,23 +34,20 @@ async def run_isONclust3(
     if post_cluster_flag:
         command.append("--post-cluster")
 
-    result = await utils.exec_command(command)
+    (await utils.exec_command(command)).unwrap()
 
-    if not ok(result):
-        return result  # pyright: ignore
+    path = Path(output_dir, "clustering", "fastq_files")
+    if not path.exists():
+        raise RuntimeError(f"Expected the path `{path}` to exist as the command doesn't seem to have failed.")
 
-    path = Path(output_folder, "clustering", "fastq_files")
-    if not path.exists:
-        return Err(RuntimeError(f"Expected the path `{path}` to exist as the command doesn't seem to have failed."))
-
-    filepaths = []
+    filepaths: list[Path] = []
     for root, _, files in path.walk():
         for file in files:
             filepath = Path(root, file)
             if filepath.suffix == ".fastq":
                 filepaths.append(filepath)
 
-    return Ok(filepaths)
+    return filepaths
 
 
 # Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
