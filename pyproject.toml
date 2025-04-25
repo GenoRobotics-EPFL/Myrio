@@ -11,6 +11,8 @@ dependencies = [
     "isonclust>=0.0.6.1",
     "numpy>=2.2.5",
     "polars>=1.27.1",
+    "pysam>=0.23.0",
+    "pyspoa>=0.2.1",
     "safe-result>=4.0.3",
 ]
 

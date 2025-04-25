@@ -1,4 +1,5 @@
 import asyncio
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 import aiofiles as aiof
@@ -7,6 +8,7 @@ from clypi._components.spinners import _PerLineIO
 from safe_result import Err, Ok, ok, safe_async
 from typing_extensions import override
 
+from consensus import spoa_consensus
 from preprocessing import preprocessing
 from selection import run_isONclust3
 from utils import check_filepath
@@ -63,18 +65,32 @@ class Cli(Command):
                 match result:
                     case Ok(fps):
                         cluster_fps.extend(fps)
-                        await spin.done()
+                        await spin.done(msg=f"Selecting plant DNA → # clusters = {len(fps)}")
                     case Err(error):
                         await spin.fail()
                         raise error
 
             async with Spinner("Generating a consensus sequence", capture=False) as spin:
-                await asyncio.sleep(1.0)
-                await spin.done()
+                executor = ProcessPoolExecutor(
+                    max_workers=1
+                )  # This allows us to run spoa_consensus fully outside the main Python process, so our spinner doesn't freeze.
+                loop = asyncio.get_running_loop()
+                result = await loop.run_in_executor(executor, spoa_consensus, cluster_fps)
+                match result:
+                    case Ok(seqs):
+                        with open("test.txt", "w") as f:
+                            _ = f.write(str(seqs))
 
+                        await spin.done()
+                    case Err(error):
+                        await spin.fail()
+                        raise error
+
+            """
             async with Spinner("Assessing quality", capture=False) as spin:
                 await asyncio.sleep(1.0)
                 await spin.done()
+            """
 
             async with Spinner("Indentifying the species", capture=False) as spin:
                 await asyncio.sleep(1.0)

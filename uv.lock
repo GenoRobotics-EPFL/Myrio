@@ -362,6 +362,8 @@ dependencies = [
     { name = "isonclust" },
     { name = "numpy" },
     { name = "polars" },
+    { name = "pysam" },
+    { name = "pyspoa" },
     { name = "safe-result" },
 ]
 
@@ -387,6 +389,8 @@ requires-dist = [
     { name = "isonclust", specifier = ">=0.0.6.1" },
     { name = "numpy", specifier = ">=2.2.5" },
     { name = "polars", specifier = ">=1.27.1" },
+    { name = "pysam", specifier = ">=0.23.0" },
+    { name = "pyspoa", specifier = ">=0.2.1" },
     { name = "safe-result", specifier = ">=4.0.3" },
 ]
 
@@ -650,6 +654,12 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b2/ef/ed08833247f1d110a5686da2d6e8f1507cc6dbc7075d21e0a0d542ab748a/pysam-0.23.0-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:e0426928e676e5d9f8320cd09741be905f90be5c7133f3ad386c7d1be84930ff", size = 25287097, upload_time = "2025-02-05T10:27:22.85Z" },
     { url = "https://files.pythonhosted.org/packages/c7/9d/0e6a147211de3d16d0b2ccbeb3d4e5fb572870a82c22d9ae16c3cbc1398f/pysam-0.23.0-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:1631c173363475c409352d9bf3ad96e7ff851ba903e5b979f55330f0b41d9b5d", size = 26039167, upload_time = "2025-02-05T10:27:21.22Z" },
 ]
+
+[[package]]
+name = "pyspoa"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/e0/a542e5f1b11add0d13315a74e496e32238c6aa07b474a9c0b3705ca384f0/pyspoa-0.2.1.tar.gz", hash = "sha256:a8a7b7df3faa1b5bb16d6b4e82099b1c9aca604c8288bcf8ca4960d376f7ff8c", size = 52121, upload_time = "2023-10-04T08:51:53.132Z" }
 
 [[package]]
 name = "pytest"
