@@ -13,14 +13,14 @@ def run(input_file_path, gene_names):
 
     ENABLE_LONG_TIME_STUFF = True
 
-    if ENABLE_LONG_TIME_STUFF == True:
+    if ENABLE_LONG_TIME_STUFF:
         os.system("rm -rf ./data/output/*")
 
     ### seqkit filter
     print("====================== SEQKIT")
     filtered_read_file_name = "filtered_reads.fastq"
     seqkit_command = f"seqkit seq -Q 10 -m 300 {input_file_path} -o ./data/output/{filtered_read_file_name}"
-    if ENABLE_LONG_TIME_STUFF == True:
+    if ENABLE_LONG_TIME_STUFF:
         os.system(seqkit_command) # TODO
 
     ### (NanoPlot)
@@ -32,7 +32,7 @@ def run(input_file_path, gene_names):
     if ENABLE_LONG_TIME_STUFF:
         os.system(isONclust_command) # TODO
     clustering_fasta_files_folder_name = "clustering_fasta_files"
-    isONclust_command2 = f"isONclust write_fastq --clusters ./data/output/{clustering_folder_name}/final_clusters.tsv --fastq ./data/output/{filtered_read_file_name} --outfolder ./data/output/{clustering_fasta_files_folder_name} --N 10" # TODO adapt N dynamically ?
+    isONclust_command2 = f"isONclust write_fastq --clusters ./data/output/{clustering_folder_name}/final_clusters.tsv --fastq ./data/output/{filtered_read_file_name} --outfolder ./data/output/{clustering_fasta_files_folder_name} --N 5" # TODO adapt N dynamically ?
     if ENABLE_LONG_TIME_STUFF:
         os.system(isONclust_command2) # TODO
 
@@ -152,10 +152,10 @@ def run(input_file_path, gene_names):
 
             
             if len(blast_record.alignments) == 0:
-                print("NO IDENTIFICATION")
+                # print("NO IDENTIFICATION")
                 continue
 
-            for alignment in blast_record.alignments[:5]: # TODO
+            for alignment in blast_record.alignments[:10]: # TODO
 
                 sumcoverage = 0
                 sumidentity = 0
@@ -172,7 +172,7 @@ def run(input_file_path, gene_names):
                 identity = (sumidentity / sumAlignLenth) * 100
                 
                 hsp = alignment.hsps[0]
-                print("IDENTIFICATION", alignment.hit_def, hsp.score, hsp.bits, coverage, identity)
+                # print("IDENTIFICATION", alignment.hit_def, hsp.score, hsp.bits, coverage, identity)
 
                 result.append({"def" : alignment.hit_def, "score" : hsp.score, "score_bits" : hsp.bits, "coverage" : coverage, "identity" : identity, "gene_name" : gene_name})
 
