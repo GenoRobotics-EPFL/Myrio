@@ -16,7 +16,7 @@ class Raxtax:
     @staticmethod
     def get_row_schema() -> list[str]:
         return [
-            "query",
+            "cluster_id",
             "phylum",
             "phylum_score",
             "class",
@@ -99,7 +99,7 @@ class Raxtax:
         )
         return Raxtax(df)
 
-    def prettify_names(self):
+    def prettify(self):
         self.df = self.df.with_columns(
             pl.col("phylum").str.replace_all("_", " ").str.to_titlecase(),
             pl.col("class").str.replace_all("_", " ").str.to_titlecase(),
