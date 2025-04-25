@@ -128,3 +128,6 @@ You can check it was correctly installed by asking infos about the resulting db 
 ```bash
 blastdbcmd -db <db_name> -info
 ```
+
+## Misc
+* We could use a ./bin/ folder for many of the tools we currently must have installed, tested a simple example with pre-built seqkit and it works with aio.subprocess.create_subprocess_exec at least.

@@ -1,5 +1,7 @@
+import asyncio as aio
 import os
 from pathlib import Path
+from types import NoneType
 
 from safe_result import Err, Ok, Result, ok
 
@@ -31,7 +33,7 @@ async def run_isONclust3(
     if post_cluster_flag:
         command.append("--post-cluster")
 
-    result = await utils.run_shell_command(command)
+    result = await utils.exec_command(command)
 
     if not ok(result):
         return result  # pyright: ignore
@@ -50,48 +52,64 @@ async def run_isONclust3(
     return Ok(filepaths)
 
 
+# Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
+async def run_blastn(
+    query_file: Path, db_path: Path, output_file: Path, evalue: float = 1e-5, outfmt: int = 6
+) -> Result[NoneType, RuntimeError]:
+    """
+    Runs BLASTN on a given query file against a specified database.
+
+    Args:
+        query_file (str): Path to the FASTA file with the query sequence(s).
+        db_path (str): Path to the BLAST database (excluding file extensions).
+        output_file (str): Path to save the BLAST output.
+        evalue (float): E-value threshold for saving hits (default: 1e-5).
+        outfmt (int): BLAST output format (default: 6 = tabular).
+    """
+    # fmt: off
+    command = [
+        "blastn",
+        "-query", str(query_file),
+        "-db", str(db_path),
+        "-out", str(output_file),
+        "-evalue", str(evalue),
+        "-outfmt", str(outfmt),
+    ]
+    # fmt: on
+
+    results = await utils.exec_command(command)
+    return results
+
+
 async def main():
     species = "Allium_Ursinum"
     marker = utils.Markers.ITS
 
     output_base = Path(f"output/{species}/")
-    output_nanoplot = Path(output_base, "nanoplot/")
-    os.makedirs(output_nanoplot, exist_ok=True)
-    output_filtered_reads = Path(output_base, "filtered_reads.fastq")
+    filtered_reads = Path(output_base, "filtered_reads.fastq")
     output_cluster = output_base  # isONclust3 creates `cluster` path on its own
-
-    # Run isONclust3 clustering
-    cluster_filepaths = (await run_isONclust3(output_filtered_reads, output_cluster)).unwrap()
-    print(cluster_filepaths)
-
-    """
-    # Decontamination (Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
-
-    # Setup paths
-    folder = Path("cluster_output/seperated_clusters")  # fetching the clusters
-    output_dir = Path("cluster_output/BLAST")  # okutput directory for BLAST results
+    output_dir = Path(output_base, "cluster_output/BLAST")  # okutput directory for BLAST results
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Find all relevant files
-    fasta_files = (
-        list(folder.glob("*.fasta"))
-        + list(folder.glob("*.fa"))
-        + list(folder.glob("*.fastaq"))
-        + list(folder.glob("*.fastq"))
-    )
+    # Run isONclust3 clustering
+    cluster_filepaths = (await run_isONclust3(filtered_reads, output_cluster)).unwrap()
+    print(cluster_filepaths)
 
-    for fasta_file in fasta_files:
+    # Decontamination (Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
+    for file in cluster_filepaths:
         # Convert .fastaq or .fastq to .fasta
-        if fasta_file.suffix == ".fastq":
-            fasta_converted = fasta_file.with_suffix(".fasta")
-            fasta_file = utils.convert_fastq_to_fasta(fasta_file, fasta_converted)
+        fasta_file = file.with_suffix(".fasta")
+        fasta_file = utils.convert_fastq_to_fasta(file, fasta_file)
 
         # Define output file path
-        output_file = output_dir / f"{fasta_file.stem}_blast.out"
+        output_file = Path(output_dir, f"{fasta_file.stem}_blast.out")
 
         # Run BLASTN
-        run_blastn(fasta_file, "Database/Magnoliopsida_raxtax_db", output_file)
+        (await run_blastn(fasta_file, Path("database/"), output_file)).unwrap()
 
     # deleting all non plant clusters (empty files)
     # delete_empty_files("cluster_output/BLAST", recursive=True)
-    """
+
+
+if __name__ == "__main__":
+    aio.run(main())

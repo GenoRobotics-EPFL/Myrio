@@ -37,7 +37,7 @@ async def run_seqkit(
         "-o", str(output_filepath)
     ]
     # fmt: on
-    results = await utils.run_shell_command(command)
+    results = await utils.exec_command(command)
     return results
 
 
@@ -62,36 +62,7 @@ async def run_nanoplot(input_fastq: Path, output_dir: Path) -> Result[NoneType, 
         "--loglength",
     ]
     # fmt: on
-    results = await utils.run_shell_command(command)
-    return results
-
-
-# Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
-async def run_blastn(
-    query_file: Path, db_path: Path, output_file: Path, evalue: float = 1e-5, outfmt: int = 6
-) -> Result[NoneType, RuntimeError]:
-    """
-    Runs BLASTN on a given query file against a specified database.
-
-    Args:
-        query_file (str): Path to the FASTA file with the query sequence(s).
-        db_path (str): Path to the BLAST database (excluding file extensions).
-        output_file (str): Path to save the BLAST output.
-        evalue (float): E-value threshold for saving hits (default: 1e-5).
-        outfmt (int): BLAST output format (default: 6 = tabular).
-    """
-    # fmt: off
-    command = [
-        "blastn",
-        "-query", str(query_file),
-        "-db", str(db_path),
-        "-out", str(output_file),
-        "-evalue", str(evalue),
-        "-outfmt", str(outfmt),
-    ]
-    # fmt: on
-
-    results = await utils.run_shell_command(command)
+    results = await utils.exec_command(command)
     return results
 
 

@@ -3,7 +3,6 @@ import re
 from enum import Enum
 from os import R_OK, W_OK, PathLike, access
 from pathlib import Path
-from types import NoneType
 from typing import Any
 
 import polars as pl
@@ -75,10 +74,16 @@ def load_data_df() -> pl.DataFrame:
     return pl.read_csv("data.csv")
 
 
-async def run_shell_command(command: list[str]) -> Result[NoneType, RuntimeError]:
-    proc = await aio.subprocess.create_subprocess_exec(
-        *command, stdout=aio.subprocess.DEVNULL, stderr=aio.subprocess.PIPE
-    )
+async def exec_command(command: list[str]) -> Result[None, RuntimeError]:
+    try:
+        proc = await aio.create_subprocess_exec(*command, stdout=aio.subprocess.DEVNULL, stderr=aio.subprocess.PIPE)
+    except FileNotFoundError as e:
+        return Err(RuntimeError(f"Command not found: {command[0]}"))
+    except OSError as error:
+        return Err(RuntimeError(f"Failed to start command `{command}`: {error}"))
+    except Exception as error:
+        return Err(RuntimeError(f"Unexpected error while starting command `{command}`: {error}"))
+
     _, stderr = await proc.communicate()
 
     if proc.returncode != 0:

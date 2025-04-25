@@ -64,7 +64,7 @@ class Raxtax:
                 "--tsv",  # Raxtax .tsv output is easier to parse
             ]
             # fmt: on
-            command_result = await utils.run_shell_command(command)
+            command_result = await utils.exec_command(command)
             if not ok(command_result):
                 return command_result  # pyright: ignore
 
@@ -111,7 +111,7 @@ class Raxtax:
 
 
 if __name__ == "__main__":
-    match aio.run(Raxtax.build("ignore/figus_matK.fasta", "ignore/Magnoliopsida_matK_raxdb.fasta")):
+    match aio.run(Raxtax.build("ignore/figus_matK_ref.fasta", "ignore/Magnoliopsida_matK_raxdb.fasta")):
         case Ok(val):
             print(val)
         case Err(error):
