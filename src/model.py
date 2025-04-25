@@ -1,11 +1,12 @@
+import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
-import xgboost as xgb
-from collections import defaultdict
-import re
-from sklearn.decomposition import PCA
-from Bio import SeqIO
+
 import polars as pl
+import xgboost as xgb
+from Bio import SeqIO
+
 
 def use_model(model_path: Path, input_fasta_fp: Path):
     model = xgb.Booster()
@@ -19,7 +20,6 @@ def _fasta_to_parquet(input_fp: Path, output_dir: Path):
 
 
 def _build_kmer_dataset_cleaned(input_fp: Path, format: str = "fasta", k: int = 5) -> pl.DataFrame:
-
     def reverse_complement(seq):
         complement = str.maketrans("ATCG", "TAGC")
         return seq.translate(complement)[::-1]
@@ -31,7 +31,7 @@ def _build_kmer_dataset_cleaned(input_fp: Path, format: str = "fasta", k: int = 
     def count_kmers(seq, k):
         counts = defaultdict(int)
         for i in range(len(seq) - k + 1):
-            kmer = canonical_kmer(seq[i:i+k])
+            kmer = canonical_kmer(seq[i : i + k])
             counts[kmer] += 1
         return counts
 
@@ -41,8 +41,7 @@ def _build_kmer_dataset_cleaned(input_fp: Path, format: str = "fasta", k: int = 
 
     def clean_sequence(seq):
         # Keep only A, T, C, G (case-insensitive), remove everything else
-        return re.sub(r'[^ATCG]', '', seq.upper())
-
+        return re.sub(r"[^ATCG]", "", seq.upper())
 
     records: Any = SeqIO.parse(input_fp, format)
     all_kmers = set()
