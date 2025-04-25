@@ -102,8 +102,7 @@ class Cli(Command):
                 await spin.done()
 
             raxtax.prettify_names()
-            print(raxtax.df) #.select(raxtax.df.columns[-8:]))
-
+            print(raxtax.df)  # .select(raxtax.df.columns[-8:]))
 
 
 def main():

@@ -4,7 +4,7 @@ from pathlib import Path
 import aiofiles as aiof
 import numpy as np
 import polars as pl
-from safe_result import Err, Ok, Result, safe, safe_async
+from safe_result import safe_async
 
 import utils
 
@@ -62,7 +62,7 @@ class Raxtax:
 
         output_fp = Path(output_dir, "raxtax.tsv")
         if not output_fp.exists():
-             raise RuntimeError(f"Raxtax seems to have failed, `{output_fp}` does not exist")
+            raise RuntimeError(f"Raxtax seems to have failed, `{output_fp}` does not exist")
         async with aiof.open(output_fp, "r") as output_file:
             raxtax_output = await output_file.readlines()
 
@@ -95,10 +95,7 @@ class Raxtax:
                 pl.col("local_confidence_score").cast(pl.Float64),
                 pl.col("global_confidence_score").cast(pl.Float64),
             )
-            .sort(
-                by="species_score",
-                descending=True
-            )
+            .sort(by="species_score", descending=True)
         )
         return Raxtax(df)
 
