@@ -4,7 +4,7 @@ from pathlib import Path
 import aiofiles as aiof
 import numpy as np
 import polars as pl
-from safe_result import Err, Ok, Result, safe
+from safe_result import Err, Ok, Result, safe, safe_async
 
 import utils
 
@@ -16,6 +16,7 @@ class Raxtax:
     @staticmethod
     def get_row_schema() -> list[str]:
         return [
+            "query",
             "phylum",
             "phylum_score",
             "class",
@@ -33,8 +34,8 @@ class Raxtax:
         ]
 
     @staticmethod
-    @safe
-    async def build(input_fp: Path, db_fp: Path, output_dir: Path) -> Result["Raxtax", Exception]:
+    @safe_async
+    async def build(input_fp: Path, db_fp: Path, output_dir: Path) -> "Raxtax":
         """Builds the Raxtax class by executing raxtab in a subprocess and parsing its results.
 
         Args:
@@ -61,7 +62,7 @@ class Raxtax:
 
         output_fp = Path(output_dir, "raxtax.tsv")
         if not output_fp.exists():
-            return Err(RuntimeError(f"Raxtax seems to have failed, `{output_fp}` does not exist"))
+             raise RuntimeError(f"Raxtax seems to have failed, `{output_fp}` does not exist")
         async with aiof.open(output_fp, "r") as output_file:
             raxtax_output = await output_file.readlines()
 
@@ -71,14 +72,14 @@ class Raxtax:
 
         parsed_raxtax_output = []
         for line in raxtax_output:
-            line = line.split("\t")[1:-1]
+            line = line.split("\t")[0:-1]
 
-            line[0] = line[0][7:]  # removes "phylum:" prefix
-            line[2] = line[2][6:]  # class
-            line[4] = line[4][6:]  # order
-            line[6] = line[6][7:]  # family
-            line[8] = line[8][6:]  # genus
-            line[10] = line[10][8:]  # species
+            line[1] = line[1][7:]  # removes "phylum:" prefix
+            line[3] = line[3][6:]  # class
+            line[5] = line[5][6:]  # order
+            line[7] = line[7][7:]  # family
+            line[9] = line[9][6:]  # genus
+            line[11] = line[11][8:]  # species
 
             parsed_raxtax_output.append(np.array(line))
 
@@ -96,9 +97,20 @@ class Raxtax:
             )
             .sort(
                 by="species_score",
+                descending=True
             )
         )
-        return Ok(Raxtax(df))
+        return Raxtax(df)
+
+    def prettify_names(self):
+        self.df = self.df.with_columns(
+            pl.col("phylum").str.replace_all("_", " ").str.to_titlecase(),
+            pl.col("class").str.replace_all("_", " ").str.to_titlecase(),
+            pl.col("order").str.replace_all("_", " ").str.to_titlecase(),
+            pl.col("family").str.replace_all("_", " ").str.to_titlecase(),
+            pl.col("genus").str.replace_all("_", " ").str.to_titlecase(),
+            pl.col("species").str.replace_all("_", " ").str.to_titlecase(),
+        )
 
 
 if __name__ == "__main__":

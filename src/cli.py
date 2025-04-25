@@ -82,13 +82,15 @@ class Cli(Command):
                     case Ok(sequences):
                         string = "\n".join([f">consensus_sequence_from_cluster_{id}\n{seq}" for (id, seq) in sequences])
                         async with aiof.open(output_fp, "w") as file:
-                            _ = file.write(string)
+                            _ = await file.write(string)
+                        async with aiof.open("consensus.fasta", "w") as file:
+                            _ = await file.write(string)
                         await spin.done()
                     case Err(error):
                         await spin.fail()
                         raise error
 
-            """
+            """ TODO
             async with Spinner("Assessing quality", capture=False) as spin:
                 await asyncio.sleep(1.0)
                 await spin.done()
@@ -96,8 +98,12 @@ class Cli(Command):
 
             async with Spinner("Indentifying the species", capture=False) as spin:
                 input_fp = Path(tmp, "consensus.fasta")
-                Raxtax.build()
+                raxtax = (await Raxtax.build(input_fp, Path("./database/Magnoliopsida_raxdb.fasta"), tmp)).unwrap()
                 await spin.done()
+
+            raxtax.prettify_names()
+            print(raxtax.df) #.select(raxtax.df.columns[-8:]))
+
 
 
 def main():

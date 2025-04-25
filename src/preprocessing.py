@@ -81,7 +81,6 @@ async def main():
     output_nanoplot = Path(output_base, "nanoplot/")
     os.makedirs(output_nanoplot, exist_ok=True)
     output_filtered_reads = Path(output_base, "filtered_reads.fastq")
-    output_cluster = output_base  # isONclust3 creates `cluster` path on its own
 
     fastq = (
         data_df.filter((pl.col("name") == species) & (pl.col(marker.value) == True) & (pl.col("reference") == False))  # noqa: E712

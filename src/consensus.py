@@ -10,7 +10,7 @@ from safe_result import safe
 def spoa_consensus(cluster_fps: list[Path], second_pass: bool = False) -> list[tuple[str, str]]:
     os.environ["OMP_NUM_THREADS"] = "1"
     consensus_sequences = []
-    for cluster_fp in cluster_fps:  # TODO use threads to // and remove debug slicing
+    for cluster_fp in cluster_fps:  # Todo: multithread this
         with pysam.FastxFile(str(cluster_fp)) as f:
             sequences = [read.sequence for read in list(f)]
 
