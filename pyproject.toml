@@ -14,6 +14,8 @@ dependencies = [
     "pysam>=0.23.0",
     "pyspoa>=0.2.1",
     "safe-result>=4.0.3",
+    "scikit-learn>=1.6.1",
+    "xgboost-cpu>=3.0.0",
 ]
 
 [project.scripts]
