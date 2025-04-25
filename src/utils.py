@@ -1,9 +1,41 @@
+import asyncio as aio
 import re
+from enum import Enum
 from os import R_OK, W_OK, PathLike, access
 from pathlib import Path
+from types import NoneType
 from typing import Any
 
 import polars as pl
+from Bio import SeqIO
+from safe_result import Err, Ok, Result
+
+
+class Markers(Enum):
+    matK = "matK"
+    rbcL = "rbcL"
+    psbA_trnH = "psbA-trnH"
+    ITS = "ITS"
+
+    @staticmethod
+    def all() -> list["Markers"]:
+        return [Markers.matK, Markers.rbcL, Markers.psbA_trnH, Markers.ITS]
+
+
+def convert_fastq_to_fasta(
+    input_filepath: str | PathLike[Any], output_filepath: str | PathLike[Any], debug: bool = False
+) -> Path:
+    """Converts a FASTQ file to FASTA format using Biopython.
+
+    Returns:
+        The output filepath for convenience.
+    """
+    input_filepath = Path(input_filepath)
+    output_filepath = Path(output_filepath)
+
+    count = SeqIO.convert(input_filepath, "fastq", output_filepath, "fasta")
+    print(f"Converted {count} records from {input_filepath} to {output_filepath}") if debug else ()
+    return output_filepath
 
 
 def check_filepath(filepath: str | PathLike[Any], readable: bool = False, writeable: bool = False) -> bool:
@@ -43,7 +75,20 @@ def load_data_df() -> pl.DataFrame:
     return pl.read_csv("data.csv")
 
 
-def __gen_data_helper_csv():
+async def run_shell_command(command: list[str]) -> Result[NoneType, RuntimeError]:
+    proc = await aio.subprocess.create_subprocess_exec(
+        *command, stdout=aio.subprocess.DEVNULL, stderr=aio.subprocess.PIPE
+    )
+    _, stderr = await proc.communicate()
+
+    if proc.returncode != 0:
+        stderr = stderr.decode(encoding="utf-8", errors="ignore")
+        return Err(RuntimeError(f"Command failed with exit code `{proc.returncode}`\n{stderr}"))
+
+    return Ok(None)
+
+
+def _gen_data_helper_csv():
     reference_re = re.compile(r"reference")
     matk_re = re.compile("[mM][aA][tT][kK]")
     rbcl_re = re.compile(r"[rR][bB][cC][lL]")

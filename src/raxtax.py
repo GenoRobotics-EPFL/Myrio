@@ -7,7 +7,7 @@ from typing import Any
 import aiofiles as aiof
 import numpy as np
 import polars as pl
-from safe_result import Err, Ok, Result
+from safe_result import Err, Ok, Result, ok
 
 import utils
 
@@ -53,30 +53,24 @@ class Raxtax:
 
         raxtax_output = None
         async with aiof.tempfile.TemporaryDirectory(prefix="raxtax_") as dir:
-            proc = await aio.subprocess.create_subprocess_exec(
+            # fmt: off
+            command = [
                 "raxtax",
-                "--query-file",
-                f"{input}",
-                "--database-path",
-                f"{db}",
-                "--prefix",
-                dir,
+                "--query-file", str(input),
+                "--database-path", str(db),
+                "--prefix", str(dir),
                 "--quiet",
                 "--redo",
                 "--tsv",  # Raxtax .tsv output is easier to parse
-                stdin=None,
-                stdout=None,
-                stderr=aio.subprocess.PIPE,
-            )
-
-            _, stderr = await proc.communicate()
-            if stderr:
-                print(f"[raxtax stderr]\n{stderr.decode()}\n")
+            ]
+            # fmt: on
+            command_result = await utils.run_shell_command(command)
+            if not ok(command_result):
+                return command_result  # pyright: ignore
 
             output_filepath = Path(dir, "raxtax.tsv")
             if not output_filepath.exists():
                 return Err(RuntimeError(f"Raxtax seems to have failed, `{output_filepath}` does not exist"))
-
             async with aiof.open(output_filepath, "r") as output_file:
                 raxtax_output = await output_file.readlines()
 
