@@ -7,7 +7,7 @@ from typing import Any
 
 import polars as pl
 from Bio import SeqIO
-from safe_result import Err, Ok, Result
+from safe_result import safe_async
 
 
 class Markers(Enum):
@@ -74,23 +74,14 @@ def load_data_df() -> pl.DataFrame:
     return pl.read_csv("data.csv")
 
 
-async def exec_command(command: list[str]) -> Result[None, RuntimeError]:
-    try:
-        proc = await aio.create_subprocess_exec(*command, stdout=aio.subprocess.DEVNULL, stderr=aio.subprocess.PIPE)
-    except FileNotFoundError as e:
-        return Err(RuntimeError(f"Command not found: {command[0]}"))
-    except OSError as error:
-        return Err(RuntimeError(f"Failed to start command `{command}`: {error}"))
-    except Exception as error:
-        return Err(RuntimeError(f"Unexpected error while starting command `{command}`: {error}"))
-
+@safe_async
+async def exec_command(command: list[str]) -> None:
+    proc = await aio.create_subprocess_exec(*command, stdout=aio.subprocess.DEVNULL, stderr=aio.subprocess.PIPE)
     _, stderr = await proc.communicate()
 
     if proc.returncode != 0:
         stderr = stderr.decode(encoding="utf-8", errors="ignore")
-        return Err(RuntimeError(f"Command failed with exit code `{proc.returncode}`\n{stderr}"))
-
-    return Ok(None)
+        raise RuntimeError(f"Command failed with exit code `{proc.returncode}`\n{stderr}")
 
 
 def _gen_data_helper_csv():
@@ -102,7 +93,7 @@ def _gen_data_helper_csv():
     name_re = re.compile(r"[A-Za-z]+_[A-Za-z]+")
 
     output = []
-    for root, dirs, files in Path("./data/").walk():
+    for root, _, files in Path("./data/").walk():
         for file in files:
             filepath = Path(root, file)
             filename_str = str(file)
@@ -133,4 +124,8 @@ def _gen_data_helper_csv():
 
 
 if __name__ == "__main__":
-    pass
+
+    async def main():
+        print(await exec_command(["seqkat", "--help"]))
+
+    aio.run(main())

@@ -5,7 +5,7 @@ from types import NoneType
 
 import polars as pl
 from Bio import SeqIO
-from safe_result import Err, Ok, Result
+from safe_result import Err, Ok, Result, safe_async
 
 import utils
 
@@ -25,7 +25,7 @@ def read_check(input_fastq: Path, threshold: int = 10) -> Result[NoneType, Value
 
 async def run_seqkit(
     input_filepath: Path, output_filepath: Path, min_len: int = 150, min_qual: int = 10, max_qual: int = 60
-) -> Result[NoneType, RuntimeError]:
+) -> Result[NoneType, Exception]:
     """Filtering with SeqKit."""
     # fmt: off
     command = [
@@ -41,7 +41,7 @@ async def run_seqkit(
     return results
 
 
-async def run_nanoplot(input_fastq: Path, output_dir: Path) -> Result[NoneType, RuntimeError]:
+async def run_nanoplot(input_fastq: Path, output_dir: Path) -> Result[NoneType, Exception]:
     """Runs NanoPlot to generate quality and length distribution graphs from a FASTQ file.
 
     Parameters:
@@ -66,11 +66,10 @@ async def run_nanoplot(input_fastq: Path, output_dir: Path) -> Result[NoneType, 
     return results
 
 
-# Preprocessing function
-async def preprocessing(input_fastq: Path, output_fastq: Path):
+@safe_async
+async def preprocessing(input_fastq: Path, output_fastq: Path) -> None:
     read_check(input_fastq).unwrap()
-    sk_results = await run_seqkit(input_fastq, output_fastq)
-    sk_results.unwrap()
+    (await run_seqkit(input_fastq, output_fastq)).unwrap()
 
 
 async def main():

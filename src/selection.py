@@ -10,7 +10,7 @@ import utils
 
 async def run_isONclust3(
     fastq_file: Path, output_folder: Path, post_cluster_flag: bool = True, n_flag: int = 3
-) -> Result[list[Path], RuntimeError]:
+) -> Result[list[Path], Exception]:
     """Runs isONclust3 on the provided `fastq_file`.
 
     Args:
@@ -55,7 +55,7 @@ async def run_isONclust3(
 # Cleaning for contaminations (selecting only clusters corresponding to angiosperms)
 async def run_blastn(
     query_file: Path, db_path: Path, output_file: Path, evalue: float = 1e-5, outfmt: int = 6
-) -> Result[NoneType, RuntimeError]:
+) -> Result[NoneType, Exception]:
     """
     Runs BLASTN on a given query file against a specified database.
 

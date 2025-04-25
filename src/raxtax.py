@@ -36,7 +36,7 @@ class Raxtax:
         ]
 
     @staticmethod
-    async def build(input: str | PathLike[Any], db: str | PathLike[Any]) -> Result["Raxtax", RuntimeError]:
+    async def build(input: str | PathLike[Any], db: str | PathLike[Any]) -> Result["Raxtax", Exception]:
         """Builds the Raxtax class by executing raxtab in a subprocess and parsing its results.
 
         Args:

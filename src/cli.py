@@ -1,10 +1,14 @@
 import asyncio
+from pathlib import Path
 
+import aiofiles as aiof
 from clypi import Command, Positional, Spinner, cprint
 from clypi._components.spinners import _PerLineIO
-from safe_result import Err, Ok, Result
+from safe_result import Err, Ok, ok, safe_async
 from typing_extensions import override
 
+from preprocessing import preprocessing
+from selection import run_isONclust3
 from utils import check_filepath
 
 
@@ -29,7 +33,8 @@ class Cli(Command):
             case Err(value):
                 cprint("Error", fg="red", bold=True, end=f": {value}\n")
 
-    async def _run(self) -> Result[None, RuntimeError]:
+    @safe_async
+    async def _run(self) -> None:
         async with Spinner("Checking filepath", capture=False) as spin:
             await asyncio.sleep(1.0)
             match check_filepath(self.filepath):
@@ -37,30 +42,43 @@ class Cli(Command):
                     await spin.done()
                 case False:
                     await spin.fail()
-                    return Err(RuntimeError("Filepath does not point to an existing file."))
+                    raise RuntimeError("Filepath does not point to an existing file.")
 
-        data = None  # noqa: F841
-        async with Spinner("Pre-processing reads", capture=False) as spin:
-            await asyncio.sleep(1.0)
-            await spin.done()
+        async with aiof.tempfile.TemporaryDirectory(prefix="myrio_") as tmp:
+            tmp = Path(tmp)
 
-        async with Spinner("Selecting plant DNA", capture=False) as spin:
-            await asyncio.sleep(1.0)
-            await spin.done()
+            async with Spinner("Pre-processing reads", capture=False) as spin:
+                input_fp = Path(self.filepath)
+                filtered_reads_fp = Path(tmp, "reads.fastq")
+                result = await preprocessing(input_fp, filtered_reads_fp)
+                if not ok(result):
+                    await spin.fail()
+                    result.unwrap()
+                await spin.done()
 
-        async with Spinner("Generating a consensus sequence", capture=False) as spin:
-            await asyncio.sleep(1.0)
-            await spin.done()
+            cluster_fps: list[Path] = []
+            async with Spinner("Selecting plant DNA", capture=False) as spin:
+                input_fp = Path(tmp, "reads.fastq")
+                result = await run_isONclust3(input_fp, tmp)
+                match result:
+                    case Ok(fps):
+                        cluster_fps.extend(fps)
+                        await spin.done()
+                    case Err(error):
+                        await spin.fail()
+                        raise error
 
-        async with Spinner("Assessing quality", capture=False) as spin:
-            await asyncio.sleep(1.0)
-            await spin.done()
+            async with Spinner("Generating a consensus sequence", capture=False) as spin:
+                await asyncio.sleep(1.0)
+                await spin.done()
 
-        async with Spinner("Indentifying the species", capture=False) as spin:
-            await asyncio.sleep(1.0)
-            await spin.done()
+            async with Spinner("Assessing quality", capture=False) as spin:
+                await asyncio.sleep(1.0)
+                await spin.done()
 
-        return Ok(None)
+            async with Spinner("Indentifying the species", capture=False) as spin:
+                await asyncio.sleep(1.0)
+                await spin.done()
 
 
 def main():
