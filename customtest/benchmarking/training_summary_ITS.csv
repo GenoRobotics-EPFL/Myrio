@@ -1,0 +1,6 @@
+Metric,Value
+Train Accuracy,0.9983960243655952
+Test Accuracy,0.9076209901724458
+Best Iteration,299.0
+Training Time (s),409.79
+Valid genus count,384.0

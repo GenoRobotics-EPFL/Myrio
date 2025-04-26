@@ -11,7 +11,7 @@ from mpl_toolkits.mplot3d import Axes3D  # Needed for 3D plotting
 import time
 start_time = time.time()
 model = xgb.Booster()
-model.load_model("customtest/trained_models/xgb_kmer_model_matK.json")
+model.load_model("customtest/trained_models/xgb_kmer_model_ITS.json")
 
 label_encoder = joblib.load("customtest/species_label_encoder.joblib")
 

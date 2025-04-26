@@ -1,0 +1,16 @@
+Model, Metric,Value
+ITS, Train Accuracy,0.9983960243655952
+ITS, Test Accuracy,0.9076209901724458
+ITS, Best Iteration,299.0
+ITS, Training Time (s),409.79
+ITS, Valid genus count,384.0
+matK, Train Accuracy,0.9994818652849741
+matK, Test Accuracy,0.8975155279503105
+matK, Best Iteration,49.0
+matK, Training Time (s),13.58
+matK, Valid genus count,312.0
+rbcL, Train Accuracy,0.9987333755541482
+rbcL, Test Accuracy,0.8860759493670886
+rbcL, Best Iteration,43.0
+rbcL, Training Time (s),15.32
+rbcL, Valid genus count,417.0
